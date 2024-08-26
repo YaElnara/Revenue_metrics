@@ -32,14 +32,9 @@ revenue_metrics AS (
         CASE  WHEN previous_paid_month = previous_calendar_month
               AND total_revenue < previous_paid_month_revenue
               THEN total_revenue - previous_paid_month_revenue END AS contraction_revenue,
-        CASE  WHEN previous_paid_month != previous_calendar_month
-              AND previous_paid_month IS NOT NULL THEN total_revenue 
-              END AS back_from_churn_revenue,
-        CASE  WHEN next_paid_month IS null OR next_paid_month != next_calendar_month
-              THEN total_revenue  END AS churned_revenue,
-        CASE  WHEN next_paid_month IS NULL OR next_paid_month != next_calendar_month
-              THEN next_calendar_month  END AS churn_month
-    FROM  revenue_lag_lead_months)    
+       CASE  WHEN next_paid_month IS null OR next_paid_month != next_calendar_month
+              THEN total_revenue  END AS churned_revenue
+       FROM  revenue_lag_lead_months)    
     SELECT 
         rm.*,
         gpu.LANGUAGE,
